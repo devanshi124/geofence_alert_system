@@ -1,0 +1,65 @@
+# ==========================
+# FRONTEND
+# ==========================
+
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# ==========================
+# BACKEND
+# ==========================
+
+backend/.env
+
+# Go build files
+backend/server
+backend/server.exe
+backend/*.exe
+backend/*.out
+backend/coverage.out
+
+# ==========================
+# EDITORS
+# ==========================
+
+.vscode/
+!.vscode/extensions.json
+
+.idea/
+
+# ==========================
+# OS FILES
+# ==========================
+
+.DS_Store
+Thumbs.db
+
+# ==========================
+# LOGS
+# ==========================
+
+logs/
+*.log
+
+# ==========================
+# CACHE
+# ==========================
+
+.cache/
+
+# ==========================
+# TEMP FILES
+# ==========================
+
+*.local
