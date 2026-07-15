@@ -10,8 +10,7 @@ import {
 const AlertContext = createContext(null);
 
 const WS_URL =
-  import.meta.env.VITE_WS_URL ??
-  "ws://localhost:8080/ws/alerts";
+  import.meta.env.VITE_WS_URL ;
 
 const MAX_RECENT_ALERTS = 50;
 const RECONNECT_DELAY = 3000;

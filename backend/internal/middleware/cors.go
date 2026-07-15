@@ -3,29 +3,41 @@ package middleware
 import "net/http"
 
 func CORS(next http.Handler) http.Handler {
-	return http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set(
-				"Access-Control-Allow-Origin",
-				"http://localhost:5173",
-			)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-			w.Header().Set(
-				"Access-Control-Allow-Methods",
-				"GET, POST, PUT, PATCH, DELETE, OPTIONS",
-			)
+		origin := r.Header.Get("Origin")
 
-			w.Header().Set(
-				"Access-Control-Allow-Headers",
-				"Content-Type, Authorization",
-			)
+		allowedOrigins := map[string]bool{
+			"http://localhost:5173": true,
 
-			if r.Method == http.MethodOptions {
-				w.WriteHeader(http.StatusNoContent)
-				return
-			}
+			// Your deployed frontend
+			"https://geofence-alert-system-ashen.vercel.app": true,
+		}
 
-			next.ServeHTTP(w, r)
-		},
-	)
+		if allowedOrigins[origin] {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		}
+
+		w.Header().Set(
+			"Access-Control-Allow-Methods",
+			"GET, POST, PUT, PATCH, DELETE, OPTIONS",
+		)
+
+		w.Header().Set(
+			"Access-Control-Allow-Headers",
+			"Content-Type, Authorization",
+		)
+
+		w.Header().Set(
+			"Access-Control-Allow-Credentials",
+			"true",
+		)
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }

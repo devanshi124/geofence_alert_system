@@ -14,13 +14,15 @@ export default function useLiveAlerts() {
     let disposed = false;
 
     function connect() {
-      if (disposed) {
-        return;
-      }
+      if (disposed) return;
 
-      const socket = new WebSocket(
-        import.meta.env.VITE_WS_URL,
-      );
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+      const wsUrl = apiUrl
+        .replace(/^https:/, "wss:")
+        .replace(/^http:/, "ws:");
+
+      const socket = new WebSocket(`${wsUrl}/ws/alerts`);
 
       socketRef.current = socket;
 
@@ -34,10 +36,9 @@ export default function useLiveAlerts() {
         try {
           const alert = JSON.parse(event.data);
 
-          setAlerts((current) => [
-            alert,
-            ...current,
-          ].slice(0, MAX_ALERTS));
+          setAlerts((current) =>
+            [alert, ...current].slice(0, MAX_ALERTS),
+          );
         } catch (error) {
           console.error(
             "Invalid WebSocket message:",
@@ -51,9 +52,7 @@ export default function useLiveAlerts() {
       };
 
       socket.onclose = () => {
-        if (disposed) {
-          return;
-        }
+        if (disposed) return;
 
         setConnected(false);
 
